@@ -2,15 +2,11 @@ package org.example;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-
 public class Path{
     Maze maze;
-    //int rating;
     ArrayList<Square> squares = new ArrayList<>();
-    //List<Maze.Direction> moves;
-    //Path path;
     Path(Maze maze){
-        squares.add(maze.getStart());
+        this.maze = maze; squares.add(maze.getStart());
     }
     Path(Path path){
         squares = new ArrayList<>(path.getSquares());
@@ -31,7 +27,7 @@ public class Path{
     }
 
     public boolean isSolutionPath(Maze maze){
-        return getSquares().get(getSquares().size() - 1).equals(maze.getEnd());
+        return getSquares().get(0).equals(maze.getStart()) && getSquares().get(getSquares().size() - 1).equals(maze.getEnd());
     }
 
     public void push(Square square){
@@ -47,10 +43,13 @@ public class Path{
     }
     public Path move (Maze maze, Direction direction) throws UnableToMoveException {
         try {
-        Square lSquare = getSquares().get(getSquares().size() - 1);
+        Square lSquare = this.getSquares().get(getSquares().size() - 1);
         Square newSquare = maze.squareAdjacent(lSquare, direction);
             if (!maze.isBlockedSquare(newSquare) && isNotRetracing()) {
                 this.squares.add(newSquare);
+            }
+            else{
+                throw new UnableToMoveException("none exist");
             }
         }catch(NoSuchElementException e){
             throw new UnableToMoveException("none exist");
@@ -65,6 +64,13 @@ public class Path{
         }
         return string;
     }
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof Path) {
+            return this.getPathString().equals(((Path)other).getPathString());
+        } return false;
+    }
+
 }
 
 

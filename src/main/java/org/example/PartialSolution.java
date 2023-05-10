@@ -1,15 +1,23 @@
 package org.example;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PartialSolution {
         int rating;
         Path path;
-        List<Direction> moves;
+        Maze maze;
+        ArrayList<Direction> moves;
         PartialSolution(Maze maze){
+            this.maze = maze;
             path = new Path(maze);
         }
-        PartialSolution partial;
-        public List<Direction> getMoves(){
+        PartialSolution(ArrayList<Direction> moves,Path path,Maze maze){
+            this.moves = moves;
+            this.path = path;
+            this.maze = maze;
+        }
+
+        public ArrayList<Direction> getMoves(){
             return moves;
         }
 
@@ -24,10 +32,27 @@ public class PartialSolution {
              return getPath().isSolutionPath(maze);
         }
 
+        public PSSet expandPartialSolution(Maze maze){
+            Path path1 = new Path(maze);
+            Path path2 = new Path(maze);
+            Path path3 = new Path(maze);
+            Path path4 = new Path(maze);
+
+            for (Direction d: maze){
+
+            }
+
+        }
+
+
+        public String toString(){
+            return path.getPathString();
+        }
+
 
 
     }
-/*
+
 
     List<Direction> solveMaze(Maze maze,int runtime){
         PSSet psset1 = new PSSet(new PartialSolution()(maze));
@@ -46,7 +71,10 @@ public class PartialSolution {
 
 
 }
-*/
+
+ */
+
+
 
 
 

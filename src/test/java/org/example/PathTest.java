@@ -72,13 +72,12 @@ class PathTest {
         System.out.println("isNotRetracingTest after 2nd push" + p1.getPathString());
         assertFalse(p1.isNotRetracing());
     }
-    /*
+
     @Test
     void testEquals() {
         assertTrue(p1.equals(p2));
     }
 
-     */
 
 }
 

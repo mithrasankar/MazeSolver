@@ -1,10 +1,13 @@
 package org.example;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
+import static org.example.Direction.UP;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MazeTest {
@@ -128,15 +131,17 @@ class MazeTest {
     }
 
     @Test
-    void squareAdjacentTestBounds() {
+    void squareAdjacentTestBounds()  throws NoSuchElementException {
         Square one = new Square(0, 2);
-        assertEquals(one.toString(), m1.squareAdjacent(one, Direction.UP).toString());
+        Assertions.assertThrows(NoSuchElementException.class,
+                ()->m1.squareAdjacent(one, Direction.UP));
     }
 
     @Test
-    void squareAdjacentTestBounds2() {
+    void squareAdjacentTestBounds2() throws NoSuchElementException{
         Square one = new Square(0, 4);
-        assertEquals(one.toString(), m1.squareAdjacent(one, Direction.RIGHT).toString());
+        Assertions.assertThrows(NoSuchElementException.class,
+                ()->m1.squareAdjacent(one, Direction.RIGHT));
     }
 }
 

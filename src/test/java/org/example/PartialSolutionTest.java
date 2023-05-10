@@ -96,7 +96,5 @@ PartialSolution{moves=[RIGHT], path=Path{[[1,2], [1,1]]}, rating=3}
         PartialSolution ps2 = new PartialSolution(d2, p2, m2);
         assertTrue(ps1.equals(ps2));
     }
-
-
- */
+*/
 }
