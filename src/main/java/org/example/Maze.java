@@ -82,10 +82,9 @@ public class Maze {
         return result;
     }
 
-    public Square squareAdjacent(Square square, Direction direction) {
+    public Square squareAdjacent(Square square, Direction direction) throws NoSuchElementException{
         int col = square.getCol();
         int row = square.getRow();
-        try {
             switch (direction) {
                 case UP:
                     row -= 1;
@@ -100,15 +99,11 @@ public class Maze {
                     col += 1;
                     break;
             }
-            if (row >= 0 && row <= getSize() && col >= 0 && col <= getSize()) {
+            if (row >= 0 && row < getSize() && col >= 0 && col < getSize()) {
                 return new Square(row, col);
             } else {
                 throw new NoSuchElementException("none exist");
             }
-        } catch (NoSuchElementException e) {
-            System.out.println(e.getMessage());
-        }
-        return square;
     }
 
     public String toString() {

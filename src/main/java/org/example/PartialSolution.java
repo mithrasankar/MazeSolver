@@ -1,12 +1,12 @@
 package org.example;
 import java.util.List;
-/*
+
 public class PartialSolution {
         int rating;
         Path path;
         List<Direction> moves;
         PartialSolution(Maze maze){
-            new PartialSolution();
+            path = new Path(maze);
         }
         PartialSolution partial;
         public List<Direction> getMoves(){
@@ -20,10 +20,14 @@ public class PartialSolution {
         public int getRating() {
             return rating;
         }
+        public boolean isSolution(Maze maze){
+             return getPath().isSolutionPath(maze);
+        }
+
 
 
     }
-
+/*
 
     List<Direction> solveMaze(Maze maze,int runtime){
         PSSet psset1 = new PSSet(new PartialSolution()(maze));
