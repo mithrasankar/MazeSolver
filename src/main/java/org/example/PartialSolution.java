@@ -1,78 +1,86 @@
 package org.example;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PartialSolution {
-        int rating;
-        Path path;
-        Maze maze;
-        ArrayList<Direction> moves;
-        PartialSolution(Maze maze){
-            this.maze = maze;
-            path = new Path(maze);
-        }
-        PartialSolution(ArrayList<Direction> moves,Path path,Maze maze){
-            this.moves = moves;
-            this.path = path;
-            this.maze = maze;
-        }
+    int rating;
+    Path path;
+    Maze maze;
+    ArrayList<Direction> moves;
 
-        public ArrayList<Direction> getMoves(){
-            return moves;
-        }
+    PartialSolution(Maze maze) {
+        this.maze = maze;
+        this.path = new Path(maze);
+    }
 
-       public Path getPath(){
-            return path;
-        }
+    PartialSolution(ArrayList<Direction> moves, Path path, Maze maze) {
+        this.moves = moves;
+        this.path = path;
+        this.maze = maze;
+    }
 
-        public int getRating() {
-            return rating;
-        }
-        public boolean isSolution(Maze maze){
-             return getPath().isSolutionPath(maze);
-        }
+    public ArrayList<Direction> getMoves() {
+        return moves;
+    }
 
-        public PSSet expandPartialSolution(Maze maze){
-            Path path1 = new Path(maze);
-            Path path2 = new Path(maze);
-            Path path3 = new Path(maze);
-            Path path4 = new Path(maze);
+    public Path getPath() {
+        return path;
+    }
 
-            for (Direction d: maze){
+    public Maze getMaze(){
+        return maze;
+    }
+
+    public int getRating() {
+        return getPath().evalPath(getMaze());
+    }
+
+    public boolean isSolution() {
+        return getPath().isSolutionPath(getMaze());
+    }
+
+    public int hashCode(){
+        return 1;
+    }
+
+    public PSSet expandPartialSolution(Maze maze) {
+        PSSet psSet = new PSSet(this);
+        Direction[] directions = Direction.values();
+        Path currentPath = this.path;
+        for (Direction direction : directions) {
+            try {
+                Path newPath = currentPath.move(maze, direction);
+                ArrayList<Direction> newMoves = new ArrayList<>(this.moves);
+                newMoves.add(direction);
+                PartialSolution newPartialSolution = new PartialSolution(newMoves, newPath, maze);
+                psSet.PSet.add(newPartialSolution);
+            } catch (UnableToMoveException e) {
 
             }
-
+            psSet.remove(this);
         }
-
-
-        public String toString(){
-            return path.getPathString();
-        }
-
-
-
+        return psSet;
     }
 
 
-    List<Direction> solveMaze(Maze maze,int runtime){
-        PSSet psset1 = new PSSet(new PartialSolution()(maze));
-        for (int i = 0; i< psset1.length; i++) {
-            best = psset1.getBestPartialSolution();
-            if (best.isSolution(maze) && runtime == max) {
-                return psset1.getMoves();
-            } else if (runtime < max) {
-                PSSet psset2 = expandPartialSolution(maze);
-            }
-        }
-        psset2.remove(psset1);
-        PSSet psset3 = union(psset1, psset2);
-        return psset3.getMoves();
+    public String toString() {
+        return getPath().getPathString();
     }
 
-
+    public boolean equals(Object other){
+        if (this == other) {
+            return true;
+        }
+        if (other instanceof PartialSolution) {
+            PartialSolution otherPS = (PartialSolution) other;
+            return moves.equals(otherPS.moves) && path.equals(otherPS.path) && maze.equals(otherPS.maze);
+        }
+        return false;
+    }
 }
 
- */
+
+
+
 
 
 

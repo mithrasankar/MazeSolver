@@ -42,9 +42,10 @@ public class Path{
         return getSquares().size();
     }
     public Path move (Maze maze, Direction direction) throws UnableToMoveException {
+        Square newSquare;
         try {
-        Square lSquare = this.getSquares().get(getSquares().size() - 1);
-        Square newSquare = maze.squareAdjacent(lSquare, direction);
+            Square lSquare = this.getSquares().get(getSquares().size() - 1);
+            newSquare = maze.squareAdjacent(lSquare, direction);
             if (!maze.isBlockedSquare(newSquare) && isNotRetracing()) {
                 this.squares.add(newSquare);
             }
@@ -66,11 +67,15 @@ public class Path{
     }
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Path) {
-            return this.getPathString().equals(((Path)other).getPathString());
-        } return false;
-    }
-
+            if (this == other) {
+                return true;
+            }
+            if (other instanceof Path) {
+                Path otherPath = (Path) other;
+                return squares.equals(otherPath.squares);
+            }
+            return false;
+        }
 }
 
 

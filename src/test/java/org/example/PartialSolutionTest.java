@@ -9,7 +9,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PartialSolutionTest {
-/*
+
     @Test
     void expandPartialSolutionSmallTest() {
         Maze m1 = new Maze(2,"[[0,0]]", "[1,0]","[0,1]");
@@ -35,7 +35,7 @@ class PartialSolutionTest {
     void expandPartialSolutionThreePathTest() {
         Maze m1 = new Maze(3,"[[0,1]]", "[1,1]","[0,1]");
         Path p1 = new Path(m1);
-        ArrayList<Direction> d1 = new ArrayList<>();
+        ArrayList<Direction> d1= new ArrayList<>();
         PartialSolution ps1 = new PartialSolution(d1, p1, m1);
         System.out.println(ps1);
 
@@ -59,8 +59,9 @@ PartialSolution{moves=[LEFT], path=Path{[[1,0], [1,1]]}, rating=6}
 PartialSolution{moves=[UP], path=Path{[[0,1], [1,1]]}, rating=2}
 PartialSolution{moves=[DOWN], path=Path{[[2,1], [1,1]]}, rating=3}
 PartialSolution{moves=[RIGHT], path=Path{[[1,2], [1,1]]}, rating=3}
+*/
 
-
+@Test
     void expandPartialSolutionFourPathTest() {
         Maze m1 = new Maze(3,"[]", "[1,1]","[0,1]");
         Path p1 = new Path(m1);
@@ -96,5 +97,4 @@ PartialSolution{moves=[RIGHT], path=Path{[[1,2], [1,1]]}, rating=3}
         PartialSolution ps2 = new PartialSolution(d2, p2, m2);
         assertTrue(ps1.equals(ps2));
     }
-*/
 }
