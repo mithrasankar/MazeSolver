@@ -126,6 +126,20 @@ public class Maze {
         }
         return string;
     }
+
+    @Override
+    public boolean equals(Object mze){
+        if (this == mze) {
+            return true;
+        }
+        if (mze instanceof Maze) {
+            Maze other = (Maze)mze;
+            return size == other.size && this.blocked.equals(other.blocked)&&this.start.equals(other.start) && this.end.equals(other.end);
+        }
+        else {
+            return false;
+        }
+    }
 }
 
 

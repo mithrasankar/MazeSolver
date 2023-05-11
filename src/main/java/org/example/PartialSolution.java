@@ -68,7 +68,7 @@ public class PartialSolution {
     public String toString() {
         return getPath().getPathString();
     }
-
+@Override
     public boolean equals(Object other){
         if (this == other) {
             return true;
