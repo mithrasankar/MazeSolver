@@ -34,28 +34,31 @@ public class Path{
         getSquares().add(square);
     }
     public void pop(){
-        Square sq = getSquares().get(getSquares().size()-1);
-        getSquares().remove(sq);
+        int index = getSquares().size() - 1;
+        getSquares().remove(index);
     }
 
     public int size(){
         return getSquares().size();
     }
     public Path move (Maze maze, Direction direction) throws UnableToMoveException {
+        Square lSquare = this.getSquares().get(getSquares().size() - 1);
         Square newSquare;
         try {
-            Square lSquare = this.getSquares().get(getSquares().size() - 1);
             newSquare = maze.squareAdjacent(lSquare, direction);
-            if (!maze.isBlockedSquare(newSquare) && isNotRetracing()) {
+        }catch(NoSuchElementException e){
+            throw new UnableToMoveException("none exist");
+        }
+        Path newPath = new Path(this);
+        newPath.push(newSquare);
+
+        if (!maze.isBlockedSquare(newSquare) && isNotRetracing()) {
                 this.squares.add(newSquare);
             }
             else{
                 throw new UnableToMoveException("none exist");
             }
-        }catch(NoSuchElementException e){
-            throw new UnableToMoveException("none exist");
-        }
-        return this;
+        return newPath;
     }
     public String getPathString(){
         String string = "";

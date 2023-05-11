@@ -48,16 +48,19 @@ public class PartialSolution {
         Path currentPath = this.path;
         for (Direction direction : directions) {
             try {
-                Path newPath = currentPath.move(maze, direction);
-                ArrayList<Direction> newMoves = new ArrayList<>(this.moves);
-                newMoves.add(direction);
-                PartialSolution newPartialSolution = new PartialSolution(newMoves, newPath, maze);
-                psSet.PSet.add(newPartialSolution);
+                Path newPath = new Path(currentPath);
+                newPath.move(maze, direction);
+                if (newPath.isNotRetracing()) {
+                    ArrayList<Direction> newMoves = new ArrayList<>(this.moves);
+                    newMoves.add(direction);
+                    PartialSolution newPartialSolution = new PartialSolution(newMoves, newPath, maze);
+                    psSet.PSet.add(newPartialSolution);
+                }
             } catch (UnableToMoveException e) {
-
+                // Handle exception if needed
             }
-            psSet.remove(this);
         }
+        psSet.remove(this);
         return psSet;
     }
 
