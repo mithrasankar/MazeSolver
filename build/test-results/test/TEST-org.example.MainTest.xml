@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.example.MainTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-05-12T00:52:54" hostname="wifi-roaming-128-4-96-111.wifi.udel.edu" time="0.012">
+<testsuite name="org.example.MainTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-05-12T13:31:03" hostname="wifi-roaming-128-4-137-216.wifi.udel.edu" time="0.015">
   <properties/>
-  <testcase name="solveMazeHelper()" classname="org.example.MainTest" time="0.012"/>
+  <testcase name="solveMazeTest1()" classname="org.example.MainTest" time="0.009"/>
+  <testcase name="solveMazeTest2()" classname="org.example.MainTest" time="0.002"/>
+  <testcase name="solveMazeTest3()" classname="org.example.MainTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
