@@ -1,29 +1,31 @@
 package org.example;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Main {
-     /*
+    public static List<Direction> solveMaze(Maze maze, long maxRunTime){
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0;
 
+        Path initialPath = new Path(maze);
+        ArrayList<Direction> initialMoves = new ArrayList<>();
+        PartialSolution initialPartialSolution = new PartialSolution(initialMoves, initialPath, maze);
+        PSSet psSet = new PSSet(initialPartialSolution);
 
-    public ArrayList<Direction> solveMaze(Maze maze,float runtime) throws TimeOutException{
-        float start = System.currentTimeMillis()/1000
-        PartialSolution ps = new PartialSolution(maze);
-        PSSet psset = new PSSet(maze);
-        PSSet psset1 = new PSSet(new PartialSolution()(maze));
-        for (int i = 0; i< psset1.length; i++) {
-            best = psset1.getBestPartialSolution();
-            if (best.isSolution(maze) && runtime == max) {
-                return psset1.getMoves();
-            } else if (runtime < max) {
-                PSSet psset2 = expandPartialSolution(maze);
+        while (elapsedTime < maxRunTime * 1000) {
+            PartialSolution bestPartialSolution = psSet.getBestPartialSolution();
+            if (bestPartialSolution.isSolution()) {
+                return bestPartialSolution.getMoves();
             }
+
+            psSet.remove(bestPartialSolution);
+            PSSet expandedSet = bestPartialSolution.expandPartialSolution(maze);
+            psSet = PSSet.union(psSet, expandedSet);
+
+            elapsedTime = System.currentTimeMillis() - startTime;
         }
-        psset2.remove(psset1);
-        PSSet psset3 = union(psset1, psset2);
-        return psset3.getMoves();
+
+        throw new MazeException("could not finish by max runtime.");
     }
-
-
-}
-
- */
 }
