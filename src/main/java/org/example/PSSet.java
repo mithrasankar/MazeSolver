@@ -9,7 +9,7 @@ public class PSSet{
         PSet.add(ps);
     }
     PSSet(Collection collection){
-        psolutions.addAll(collection);
+        PSet.addAll(collection);
     }
 
     public String toString(){
@@ -49,12 +49,6 @@ public class PSSet{
 
     public boolean remove(PartialSolution ps){
         return PSet.remove(ps);
-       /* if (this.PSet.contains(ps)) {
-            this.remove(ps);
-            return true;
-        }
-        return false;
-        */
 
     }
 
@@ -91,17 +85,18 @@ public class PSSet{
         this.psolutions = pSolutions;
     }
 
-    public PartialSolution getBestPartialSolution(){
-        int rating = getPsolutions().get(0).getRating();
-        PartialSolution best = getPsolutions().get(0);
-        for(int i = 0; i<getPsolutions().size(); i++){
-            if(getPsolutions().get(i).getRating() <rating){
-                rating = getPsolutions().get(i).getRating();
-                best = getPsolutions().get(i);
+    public PartialSolution getBestPartialSolution() {
+        int rating = PSet.iterator().next().getRating();
+        PartialSolution best = PSet.iterator().next();
+        for (PartialSolution partialSolution : PSet) {
+            if (partialSolution.getRating() < rating) {
+                rating = partialSolution.getRating();
+                best = partialSolution;
             }
         }
         return best;
     }
+
 
 
 }

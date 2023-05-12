@@ -2,7 +2,6 @@ package org.example;
 import java.util.ArrayList;
 
 public class PartialSolution {
-    int rating;
     Path path;
     Maze maze;
     ArrayList<Direction> moves;
@@ -68,7 +67,7 @@ public class PartialSolution {
     public String toString() {
         return getPath().getPathString();
     }
-@Override
+
     public boolean equals(Object other){
         if (this == other) {
             return true;
