@@ -6,10 +6,12 @@
  */
 package org.example;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PartialSolution {
     Path path;
     Maze maze;
+    int count = 0;
     ArrayList<Direction> moves;
 
     PartialSolution(Maze maze) {
@@ -27,6 +29,8 @@ public class PartialSolution {
         return moves;
     }
 
+    public int getCount(){return count;}
+
     public Path getPath() {
         return path;
     }
@@ -43,10 +47,6 @@ public class PartialSolution {
         return getPath().isSolutionPath(getMaze());
     }
 
-    public int hashCode(){
-        return 1;
-    }
-
     public PSSet expandPartialSolution(Maze maze) {
         PSSet psSet = new PSSet(this);
         Direction[] directions = Direction.values();
@@ -58,17 +58,18 @@ public class PartialSolution {
                 if (newPath.isNotRetracing()) {
                     ArrayList<Direction> newMoves = new ArrayList<>(this.moves);
                     newMoves.add(direction);
+                    count++;
                     PartialSolution newPartialSolution = new PartialSolution(newMoves, newPath, maze);
                     psSet.PSet.add(newPartialSolution);
                 }
             } catch (UnableToMoveException e) {
-                // Handle exception if needed
+
             }
         }
         psSet.remove(this);
+        System.out.println(count);
         return psSet;
     }
-
 
     public String toString() {
         return getPath().getPathString();
@@ -83,6 +84,10 @@ public class PartialSolution {
             return moves.equals(otherPS.moves) && path.equals(otherPS.path) && maze.equals(otherPS.maze);
         }
         return false;
+    }
+    @Override
+    public int hashCode(){
+        return Objects.hash(moves,path,maze);
     }
 }
 

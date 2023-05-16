@@ -10,9 +10,8 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 enum Direction {UP, DOWN, LEFT, RIGHT}
 public class Maze {
-
-
     int size; //number (integer) of rows, columns in square maze
+    char[][] maze;
     String blocked;
     String start;
     String end;
@@ -22,6 +21,36 @@ public class Maze {
         this.blocked = blocked;
         this.start = start;
         this.end = end;
+        initializeMaze();
+        populateMaze();
+    }
+
+    public void initializeMaze() {
+        maze = new char[size][size];
+        for (char[] row : maze) {
+            for (int i = 0; i < row.length; i++) {
+                row[i] = 'C';
+            }
+        }
+    }
+    Square startSquare;
+    Square endSquare;
+    public void populateMaze() {
+        for (Square square : parseSquareList(blocked)) {
+            int row = square.getRow();
+            int col = square.getCol();
+            if (row >= 0 && row < size && col >= 0 && col < size) {
+                maze[row][col] = 'B';
+            }
+        }
+        startSquare = parseSquare(start);
+        if (startSquare.getRow() >= 0 && startSquare.getRow() < size && startSquare.getCol() >= 0 && startSquare.getCol() < size) {
+            maze[startSquare.getRow()][startSquare.getCol()] = 'S';
+        }
+        endSquare = parseSquare(end);
+        if (endSquare.getRow() >= 0 && endSquare.getRow() < size && endSquare.getCol() >= 0 && endSquare.getCol() < size) {
+            maze[endSquare.getRow()][endSquare.getCol()] = 'E';
+        }
     }
 
     public int getSize() {
@@ -29,16 +58,48 @@ public class Maze {
     }
 
     public Square getStart() {
-        return parseSquare(start);
+        int rows = getSize();
+        int cols = getSize();
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (maze[i][j] == 'S') {
+                    return new Square(i, j);
+                }
+            }
+        }
+        return null;
     }
 
+
     public Square getEnd() {
-        return parseSquare(end);
+    int rows = getSize();
+    int cols = getSize();
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (maze[i][j] == 'E') {
+                return new Square(i, j);
+            }
+        }
+    }
+    return null;
+}
+
+    public char[][] getMaze() {
+        return maze;
     }
 
     public ArrayList<Square> getBlocked() {
-        return parseSquareList(blocked);
-    }
+       ArrayList<Square> blockedSquares = new ArrayList<>();
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (maze[row][col] == 'B') {
+                        blockedSquares.add(new Square(row, col));
+                    }
+                }
+            }
+            return blockedSquares;
+        }
+
 
     public int distance(Square one, Square two) { //rating
         int rowD = Math.abs(one.getRow() - two.getRow());
@@ -47,7 +108,34 @@ public class Maze {
     }
 
     public int evalSquare(Square square) {
-        return distance(square, getEnd());
+        int distance = distance(square, getEnd());
+        int blockageFactor = countBlockedSquares(square, getEnd());
+
+        if (2 * blockageFactor > distance) {
+            blockageFactor = (int) Math.pow((2 * blockageFactor - distance), 3);
+        } else {
+            blockageFactor = 0;
+        }
+
+        return distance + blockageFactor;
+    }
+
+
+    public int countBlockedSquares(Square square1, Square square2) {
+        int minRow = Math.min(square1.getRow(), square2.getRow());
+        int maxRow = Math.max(square1.getRow(), square2.getRow());
+        int minCol = Math.min(square1.getCol(), square2.getCol());
+        int maxCol = Math.max(square1.getCol(), square2.getCol());
+
+        int count = 0;
+        for (int row = minRow; row <= maxRow; row++) {
+            for (int col = minCol; col <= maxCol; col++) {
+                if (maze[row][col] == 'B') {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public boolean isEndPoint(Square square) {
@@ -59,7 +147,12 @@ public class Maze {
     }
 
     public boolean isBlockedSquare(Square square) {
-            return getBlocked().contains(square);
+        ArrayList<Square> blockedList = new ArrayList<>();
+        if (maze[square.getRow()][square.getCol()] == 'B'){
+                blockedList.add(square);
+
+            }
+        return blockedList.contains(square);
         }
 
 
@@ -88,61 +181,59 @@ public class Maze {
         return result;
     }
 
-    public Square squareAdjacent(Square square, Direction direction) throws NoSuchElementException{
+    public Square squareAdjacent(Square square, Direction direction) throws NoSuchElementException {
         int col = square.getCol();
         int row = square.getRow();
-            switch (direction) {
-                case UP:
-                    row -= 1;
-                    break;
-                case DOWN:
-                    row += 1;
-                    break;
-                case LEFT:
-                    col -= 1;
-                    break;
-                case RIGHT:
-                    col += 1;
-                    break;
-            }
-            if (row >= 0 && row < getSize() && col >= 0 && col < getSize()) {
-                return new Square(row, col);
-            } else {
-                throw new NoSuchElementException("none exist");
-            }
+        switch (direction) {
+            case UP:
+                row--;
+                break;
+            case DOWN:
+                row++;
+                break;
+            case LEFT:
+                col--;
+                break;
+            case RIGHT:
+                col++;
+                break;
+        }
+        if (row >= 0 && row < getSize() && col >= 0 && col < getSize()) {
+            return new Square(row, col);
+        } else {
+            throw new NoSuchElementException("none exist");
+        }
     }
 
     public String toString() {
-        String string = "";
-        Square square;
-        for (int r = 0; r < getSize(); r++) {
-            for (int c = 0; c < getSize(); c++) {
-                square = new Square(r, c);
-                if (isBlockedSquare(square)) {
-                    string = string.concat("B ");
-                } else if (isStartPoint(square)) {
-                    string = string.concat("S ");
-                } else if (isEndPoint(square)) {
-                    string = string.concat("E ");
+        StringBuilder sb = new StringBuilder();
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == startSquare.getRow() && col == startSquare.getCol()) {
+                    sb.append('S');
+                } else if (row == endSquare.getRow() && col == endSquare.getCol()) {
+                    sb.append('E');
+                } else if (maze[row][col] == 'B') {
+                    sb.append('B');
                 } else {
-                    string = string.concat("_ ");
+                    sb.append('_');
                 }
+                sb.append(' ');
             }
-            string = string.concat("\n");
+            sb.append('\n');
         }
-        return string;
+        return sb.toString();
     }
 
     @Override
-    public boolean equals(Object mze){
+    public boolean equals(Object mze) {
         if (this == mze) {
             return true;
         }
         if (mze instanceof Maze) {
-            Maze other = (Maze)mze;
-            return size == other.size && this.blocked.equals(other.blocked)&&this.start.equals(other.start) && this.end.equals(other.end);
-        }
-        else {
+            Maze other = (Maze) mze;
+            return size == other.size && this.getBlocked().equals(other.getBlocked()) && this.startSquare.equals(other.startSquare) && this.endSquare.equals(other.endSquare);
+        } else {
             return false;
         }
     }

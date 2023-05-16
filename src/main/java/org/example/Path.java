@@ -12,10 +12,12 @@ public class Path{
     Maze maze;
     ArrayList<Square> squares = new ArrayList<>();
     Path(Maze maze){
-        this.maze = maze; squares.add(maze.getStart());
+        this.maze = maze;
+        this.squares = new ArrayList<>();
+        squares.add(maze.getStart());
     }
     Path(Path path){
-        squares = new ArrayList<>(path.getSquares());
+        this.squares = new ArrayList<>(path.getSquares());
     }
 
     public ArrayList<Square> getSquares() {

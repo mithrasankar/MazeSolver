@@ -22,8 +22,7 @@ class MazeTest {
 
     @BeforeAll
     static void setup() {
-        m1 = new Maze(4, "[[2,2],[3,4],[1,4],[3,2],[1,3]]", "[1,1]", "[2,3]");
-    }
+        m1 = new Maze(4, "[[2,2],[3,3],[1,2],[3,2],[1,3]]", "[1,1]", "[2,3]"); }
 
     @Test
     void testToString() {
@@ -92,7 +91,12 @@ class MazeTest {
     void evalSquare() {
         Square one = new Square(1, 2);
         int result = m1.evalSquare(one);
-        assertEquals(2, result);
+        assertEquals(66, result);
+    }
+    @Test
+    void evalSquare2() {
+       int result = m1.evalSquare(m1.getStart());
+        assertEquals(30, result);
     }
 
     @Test
@@ -104,8 +108,8 @@ class MazeTest {
     @Test
     void isBlockedSquareTest() {
         assertTrue(m1.isBlockedSquare(new Square(1, 3)));
-        assertTrue(m1.isBlockedSquare(new Square(1, 4)));
-        assertFalse(m1.isBlockedSquare(new Square(1, 5)));
+        assertFalse(m1.isBlockedSquare(new Square(2,0)));
+
     }
 
     @Test
@@ -151,10 +155,3 @@ class MazeTest {
     }
 }
 
-/*
-
-    @Test
-    void countBlockedSquares() {
-    }
-
- */

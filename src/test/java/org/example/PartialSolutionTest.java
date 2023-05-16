@@ -36,24 +36,23 @@ class PartialSolutionTest {
         PSSet psset = ps1.expandPartialSolution(m1);
         assertEquals(1, psset.size());
     }
-
     @Test
     void expandPartialSolutionThreePathTest() {
-        Maze m1 = new Maze(3,"[[0,1]]", "[1,1]","[0,1]");
+        Maze m1 = new Maze(4, "[[2,2],[3,3],[1,2],[3,2],[1,3]]", "[1,1]", "[2,3]");
         Path p1 = new Path(m1);
         ArrayList<Direction> d1= new ArrayList<>();
-        PartialSolution ps1 = new PartialSolution(d1, p1, m1);
+        PartialSolution ps1 = new PartialSolution(d1, new Path(p1), m1);
         System.out.println(ps1);
 
         PSSet psset = ps1.expandPartialSolution(m1);
         System.out.println(psset);
-        assertEquals(3, psset.size());
+        assertEquals(2, psset.size());
 
         d1.add(Direction.LEFT);
         p1.push(new Square(1,0));
         PartialSolution ps2 = new PartialSolution(d1, p1, m1);
-        Iterator it1 = psset.iterator();
-        while( it1.hasNext())
+        Iterator<PartialSolution> it1 = psset.iterator();
+        while(it1.hasNext())
             System.out.println(it1.next() + ": ");
 
         assertTrue(psset.contains(ps2));
@@ -77,13 +76,14 @@ PartialSolution{moves=[RIGHT], path=Path{[[1,2], [1,1]]}, rating=3}
 
         PSSet psset = ps1.expandPartialSolution(m1);
         System.out.println(psset);
-        assertEquals(4, psset.size());
-
-        d1.add(Direction.LEFT);
-        p1.push(new Square(1,0));
-        PartialSolution ps2 = new PartialSolution(d1, p1, m1);
-        Iterator it1 = psset.iterator();
-        while( it1.hasNext())
+        assertEquals(2, psset.size());
+        ArrayList<Direction> d2 = new ArrayList<>(d1);
+        d2.add(Direction.LEFT);
+        Path p2 = new Path(p1);
+        p2.push(new Square(1,0));
+        PartialSolution ps2 = new PartialSolution(d2, p2, m1);
+        Iterator<PartialSolution> it1 = psset.iterator();
+        while(it1.hasNext())
             System.out.println(it1.next() + ": ");
 
         assertTrue(psset.contains(ps2));

@@ -7,6 +7,7 @@
 package org.example;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,43 +16,60 @@ class PSSetTest {
 
     @Test
     void unionTest() {
+
+        // Create the first PSSet
         Maze m1 = new Maze(3, "[]", "[1,1]", "[0,1]");
         Path p1 = new Path(m1);
         ArrayList<Direction> d1 = new ArrayList<>();
         PartialSolution ps1 = new PartialSolution(d1, p1, m1);
+        PSSet set1 = new PSSet(ps1);
 
-        PSSet psset = ps1.expandPartialSolution(m1);
-        System.out.println(psset);
-        assertEquals(4, psset.size());
+        // Create the second PSSet
+        Maze m2 = new Maze(3, "[]", "[0,1]", "[1,1]");
+        Path p2 = new Path(m2);
+        ArrayList<Direction> d2 = new ArrayList<>();
+        PartialSolution ps2 = new PartialSolution(d2, p2, m2);
+        PSSet set2 = new PSSet(ps2);
 
-        PSSet psset2 = ps1.expandPartialSolution(m1);
-        System.out.println(psset2);
-        assertEquals(4, psset2.size());
+        // Create the expected union of set1 and set2
+        PSSet expectedUnion = new PSSet(Arrays.asList(ps1, ps2));
 
-        PSSet result = PSSet.union(psset, psset2);
-        assertEquals(4, result.size());
+        // Perform the union operation
+        PSSet result = PSSet.union(set1, set2);
+
+        // Assert that the result matches the expected union
+        assertEquals(expectedUnion, result);
+
     }
 
+
     @Test
-    void removeTest(){
-    Maze m1 = new Maze(3,"[]", "[1,1]","[0,1]");
-    Path p1 = new Path(m1);
-    ArrayList<Direction> d1 = new ArrayList<>();
-    PartialSolution ps1 = new PartialSolution(d1, p1, m1);
-        System.out.println(ps1);
-    PSSet psset = ps1.expandPartialSolution(m1);
-        System.out.println(psset);
-    assertEquals(4, psset.size());
-        d1.add(Direction.LEFT);
-        p1.push(new Square(1,0));
-    PartialSolution ps2 = new PartialSolution(d1, p1, m1);
-    Iterator it1 = psset.iterator();
-        while( it1.hasNext())
-                System.out.println(it1.next() + ": ");
-    assertTrue(psset.contains(ps2));
-    psset.remove(ps2);
-    assertFalse(psset.contains(ps2));
-}
+        void removeTest () {
+            // Create the PSSet
+            Maze m1 = new Maze(3, "[]", "[1,1]", "[0,1]");
+            Path p1 = new Path(m1);
+            ArrayList<Direction> d1 = new ArrayList<>();
+            PartialSolution ps1 = new PartialSolution(d1, p1, m1);
+            PSSet set = new PSSet(ps1);
+
+            // Create the PartialSolution to remove
+            Maze m2 = new Maze(3, "[]", "[0,1]", "[1,1]");
+            Path p2 = new Path(m2);
+            ArrayList<Direction> d2 = new ArrayList<>();
+            PartialSolution ps2 = new PartialSolution(d2, p2, m2);
+
+            // Ensure that the set contains ps2 initially
+            assertTrue(set.contains(ps2));
+
+            // Remove ps2 from the set
+            boolean removed = set.remove(ps2);
+
+            // Assert that ps2 was successfully removed from the set
+            assertTrue(removed);
+            assertFalse(set.contains(ps2));
+        }
+
+
     @Test
     void getBestPartialSolutionTest() {
         // Create a maze and partial solutions
