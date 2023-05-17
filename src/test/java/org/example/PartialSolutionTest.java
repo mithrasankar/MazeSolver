@@ -85,7 +85,6 @@ PartialSolution{moves=[RIGHT], path=Path{[[1,2], [1,1]]}, rating=3}
         Iterator<PartialSolution> it1 = psset.iterator();
         while(it1.hasNext())
             System.out.println(it1.next() + ": ");
-
         assertTrue(psset.contains(ps2));
     }
 
